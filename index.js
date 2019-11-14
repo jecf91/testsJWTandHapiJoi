@@ -20,8 +20,11 @@ app.use(express.json());
 
 //import routes
 const authRoute = require('./routes/auth');
+const postRoute = require('./routes/posts');
 
 //Route Middleware
 app.use('/api/users',authRoute);
+app.use('/api/posts',postRoute);
+
 
 app.listen(3000, ()=> console.log('running server'));

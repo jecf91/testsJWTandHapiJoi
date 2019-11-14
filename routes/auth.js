@@ -9,6 +9,9 @@ const {registerValidation, loginValidation} = require('../validation');
 //import bcrypt
 const bcrypt = require('bcryptjs');
 
+//import JWT
+const jwt = require('jsonwebtoken');
+
 //Register
 router.post('/register', async (req, res)=>{
     //validate user before posting it to the db
@@ -49,9 +52,9 @@ router.post('/login', async (req,res)=>{
     //check if password is correct
     const validPassword = await bcrypt.compare(req.body.password, userExists.password);
     if(!validPassword) return res.status(400).send('Invalid Password');
-    //missing jwt part and authorization
-
-    res.send('Logged in')
+    //create and assign token
+    const token = jwt.sign({_id: userExists._id}, process.env.TOKEN_SECRET);
+    res.header('auth-token',token).send(token);
 });
 
 module.exports = router;
